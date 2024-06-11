@@ -3,13 +3,13 @@
 $banco = new mysqli("localhost", "root", "positivo", "phpflix");
 
 // insert
-function criarUsuario($usuario, $nome, $senha)
+function criarUsuario($email, $nickname, $nome, $senha, $tipo)
 {
     global $banco;
 
     $senha = password_hash($senha, PASSWORD_DEFAULT);
 
-    $q = "INSERT INTO usuarios(id, nickname, nome, senha) VALUES (NULL, '$usuario', '$nome', '$senha')";
+    $q = "INSERT INTO usuarios(id, nickname, nome, senha) VALUES (NULL, '$email', '$nickname', '$nome', '$senha', '$tipo')";
 
     $resp = $banco->query($q);
     echo "<br> Query: " . $q;
