@@ -3,6 +3,15 @@
 $banco = new mysqli("localhost", "root", "positivo", "phpflix");
 
 // insert
+function criarFilme() 
+{
+    global $banco;
+
+    $q = "INSERT INTO filmes";
+
+    // INCOMPLETO
+} 
+
 function criarUsuario($usuario, $nome, $senha)
 {
     global $banco;
