@@ -3,22 +3,14 @@
 $banco = new mysqli("localhost", "root", "positivo", "phpflix");
 
 // insert
-function criarFilme() 
-{
-    global $banco;
+function criarUsuario($email, $nickname, $nome, $senha, $tipo)
 
-    $q = "INSERT INTO filmes";
-
-    // INCOMPLETO
-} 
-
-function criarUsuario($usuario, $nome, $senha)
 {
     global $banco;
 
     $senha = password_hash($senha, PASSWORD_DEFAULT);
 
-    $q = "INSERT INTO usuarios(id, nickname, nome, senha) VALUES (NULL, '$usuario', '$nome', '$senha')";
+    $q = "INSERT INTO usuarios(id, nickname, nome, senha) VALUES (NULL, '$email', '$nickname', '$nome', '$senha', '$tipo')";
 
     $resp = $banco->query($q);
     echo "<br> Query: " . $q;
