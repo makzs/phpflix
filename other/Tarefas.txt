@@ -29,8 +29,7 @@ TAREFAS :
 ------ CADASTRO (SESSION)
 ------ LOGOUT
 ||------ BANCO MONTADO 
------- 
------- 
------- 
------- 
------- 
+------ FILMES
+------ MOSTRAR IMAGENS OPCIONAL
+------ BOOTSTRAP
+||------ CRUD 

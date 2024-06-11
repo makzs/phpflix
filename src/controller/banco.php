@@ -4,6 +4,7 @@ $banco = new mysqli("localhost", "root", "positivo", "phpflix");
 
 // insert
 function criarUsuario($email, $nickname, $nome, $senha, $tipo)
+
 {
     global $banco;
 
