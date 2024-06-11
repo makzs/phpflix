@@ -1,7 +1,7 @@
 <?php
 require_once "banco.php";
 
-$n = $_POST["nome"] ?? null;
+$n = $_POST["nickname"] ?? null;
 
 if (is_null($n)) {
     require "formularios/formularioDeletar.php";

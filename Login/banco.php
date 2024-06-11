@@ -1,6 +1,6 @@
 <?php
 
-$banco = new mysqli("localhost:3307", "root", "", "bancoteste");
+$banco = new mysqli("localhost", "root", "positivo", "phpflix");
 
 // insert
 function criarUsuario($usuario, $nome, $senha)
@@ -9,7 +9,7 @@ function criarUsuario($usuario, $nome, $senha)
 
     $senha = password_hash($senha, PASSWORD_DEFAULT);
 
-    $q = "INSERT INTO usuarios(codigo, usuario, nome, senha) VALUES (NULL, '$usuario', '$nome', '$senha')";
+    $q = "INSERT INTO usuarios(id, nickname, nome, senha) VALUES (NULL, '$usuario', '$nome', '$senha')";
 
     $resp = $banco->query($q);
     echo "<br> Query: " . $q;
@@ -23,7 +23,7 @@ function editarUsuario($nomeAlterar, $senha)
 
     $senha = password_hash($senha, PASSWORD_DEFAULT);
 
-    $q = "UPDATE usuarios SET senha='$senha' WHERE usuario='$nomeAlterar'";
+    $q = "UPDATE usuarios SET senha='$senha' WHERE nickname='$nomeAlterar'";
 
     $resp = $banco->query($q);
     echo "<br> Query: " . $q;
@@ -35,7 +35,7 @@ function deletarUsuario($nomeDeletar)
 {
     global $banco;
 
-    $q = "DELETE FROM usuarios WHERE usuario='$nomeDeletar'";
+    $q = "DELETE FROM usuarios WHERE nickname='$nomeDeletar'";
 
     $resp = $banco->query($q);
     echo "<br> Query: " . $q;

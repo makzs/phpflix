@@ -10,6 +10,8 @@
 <body>
     <?php
     require_once "deletarUsuario.php";
+    // require_once "criarUsuario.php";
+    // require_once "login.php";
     ?>
 </body>
 

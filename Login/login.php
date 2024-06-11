@@ -1,21 +1,20 @@
 <?php
 require_once "banco.php";
 
-$u = $_POST["usuario"] ?? null;
+$u = $_POST["nickname"] ?? null;
 $s = $_POST["senha"] ?? null;
 
 if (is_null($u) || is_null($s)) {
     require "formularios/formularioLogin.php";
 } else {
 
-    $q = "SELECT usuario, nome, senha FROM usuarios
-        WHERE usuario='$u'";
+    $q = "SELECT nickname, nome, senha FROM usuarios
+        WHERE nickname='$u'";
 
     $busca = $banco->query($q);
     print_r($busca);
 
     if ($busca->num_rows > 0) {
-
         $usu = $busca->fetch_object();
 
         // echo "<br>" . $usu->senha;
