@@ -1,0 +1,36 @@
+tabelas: 
+FILMES 
+USUARIOS
+
+USUARIOS :
+id 
+nickname
+senha 
+email
+tipo (admin ou padrao)
+
+FILMES :
+id 
+nome
+categoria
+nota
+duracao
+diretor
+
+Admin pode cadastrar, remover filmes. remover usuarios do tipo padrao.
+Usuario pode "assistir" o filme selecionado.
+
+APRENDER :
+------ Como por imagem na pagina 
+------ Bootstrap
+------ Salvar imagem no banco 
+
+TAREFAS : 
+------ CADASTRO (SESSION)
+------ LOGOUT
+||------ BANCO MONTADO 
+------ 
+------ 
+------ 
+------ 
+------ 
