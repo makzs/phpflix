@@ -1,0 +1,33 @@
+/* Estilos adicionais */
+body {
+    padding-top: 56px; /* Ajuste o valor conforme necessário */
+}
+
+/* Estilo do carrossel de filmes */
+.movie-carousel {
+    display: flex;
+    overflow-x: auto;
+    padding: 20px 0;
+}
+
+.movie-card {
+    flex: 0 0 auto;
+    margin-right: 20px;
+    width: 200px;
+}
+
+.movie-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.movie-card .card-body {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.movie-card .card-title {
+    font-size: 16px;
+    margin: 10px 0 0;
+}

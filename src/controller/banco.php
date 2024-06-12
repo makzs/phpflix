@@ -1,6 +1,12 @@
 <?php
 
-$banco = new mysqli("localhost", "root", "positivo", "phpflix");
+$banco = new mysqli("localhost", "root", "", "phpflix_db");
+
+// Verificar conexão
+if ($banco->connect_error) {
+    die("Conexão falhou: " . $banco->connect_error);
+}
+
 
 // insert
 function criarUsuario($email, $nickname, $nome, $senha, $tipo)
