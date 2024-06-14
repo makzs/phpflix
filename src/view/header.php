@@ -10,16 +10,16 @@
                     <a class="nav-link" href="index.php">Início</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Filmes</a>
+                    <a class="nav-link" href="filmes.php">Filmes</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Séries</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Minha Conta</a>
+                    <a class="nav-link" href="cadastro.php">Cadastrar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                    <a class="nav-link" href="login.php">Login</a>
                 </li>
             </ul>
         </div>

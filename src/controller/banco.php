@@ -7,44 +7,53 @@ if ($banco->connect_error) {
     die("Conexão falhou: " . $banco->connect_error);
 }
 
-
-// insert
-function criarUsuario($email, $nickname, $nome, $senha, $tipo)
-
-{
+// Função para criar um novo usuário
+function criarUsuario($email, $nickname, $nome, $senha, $tipo) {
     global $banco;
 
-    $senha = password_hash($senha, PASSWORD_DEFAULT);
+    // Preparar a senha com hash
+    $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-    $q = "INSERT INTO usuarios(id, nickname, nome, senha) VALUES (NULL, '$email', '$nickname', '$nome', '$senha', '$tipo')";
+    // Preparar a query usando prepared statement
+    $stmt = $banco->prepare("INSERT INTO usuarios (id, email, usuario, nome, senha, tipo) VALUES (NULL, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $email, $nickname, $nome, $senhaHash, $tipo);
 
-    $resp = $banco->query($q);
-    echo "<br> Query: " . $q;
-    echo var_dump($resp);
+    if ($stmt->execute()) {
+        return true; 
+    } else {
+        return false; 
+    }
 }
 
-// update
-function editarUsuario($nomeAlterar, $senha)
-{
+// Função para editar a senha de um usuário
+function editarUsuario($nickname, $novaSenha) {
     global $banco;
 
-    $senha = password_hash($senha, PASSWORD_DEFAULT);
+    // Preparar a nova senha com hash
+    $senhaHash = password_hash($novaSenha, PASSWORD_DEFAULT);
 
-    $q = "UPDATE usuarios SET senha='$senha' WHERE nickname='$nomeAlterar'";
+    // Preparar a query usando prepared statement
+    $stmt = $banco->prepare("UPDATE usuarios SET senha = ? WHERE nickname = ?");
+    $stmt->bind_param("ss", $senhaHash, $nickname);
 
-    $resp = $banco->query($q);
-    echo "<br> Query: " . $q;
-    echo var_dump($resp);
+    if ($stmt->execute()) {
+        return true; 
+    } else {
+        return false; 
+    }
 }
 
-//delete
-function deletarUsuario($nomeDeletar)
-{
+// Função para deletar um usuário
+function deletarUsuario($nickname) {
     global $banco;
 
-    $q = "DELETE FROM usuarios WHERE nickname='$nomeDeletar'";
+    // Preparar a query usando prepared statement
+    $stmt = $banco->prepare("DELETE FROM usuarios WHERE nickname = ?");
+    $stmt->bind_param("s", $nickname);
 
-    $resp = $banco->query($q);
-    echo "<br> Query: " . $q;
-    echo var_dump($resp);
+    if ($stmt->execute()) {
+        return true; 
+    } else {
+        return false; 
+    }
 }

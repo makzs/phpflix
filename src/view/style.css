@@ -1,0 +1,24 @@
+.movie-card img {
+    width: 100%;
+    height: 400px; 
+    object-fit: cover; /* Ajusta a imagem para cobrir o espaço, cortando se necessário */
+  }
+  
+  .movie-card {
+    margin-bottom: 15px;
+    max-width: 300px; /* Define a largura máxima do card para combinar com a imagem */
+    margin-left: auto; /* Centraliza horizontalmente */
+    margin-right: auto; /* Centraliza horizontalmente */
+  }
+  
+  .card-body {
+    min-height: 80px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-title {
+    text-align: center;
+  }
+  

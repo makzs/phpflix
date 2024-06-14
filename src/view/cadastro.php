@@ -1,46 +1,23 @@
 <?php
 require_once "../controller/banco.php";
 
-// Processar o envio do formulário de login
+// Processar o envio do formulário de criação de usuário
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usuario = $_POST["usuario"] ?? null;
-    $senha = $_POST["senha"] ?? null;
+    $e = $_POST["email"] ?? null;
+    $n = $_POST["nome"] ?? null;
+    $u = $_POST["usuario"] ?? null;
+    $s = $_POST["senha"] ?? null;
 
-    if (!is_null($usuario) && !is_null($senha)) {
-        $loginSucesso = fazerLogin($usuario, $senha);
+    if (!is_null($e) && !is_null($u) && !is_null($s) && !is_null($n)) {
+        $criadoComSucesso = criarUsuario($e, $u, $n, $s, "default");
 
-        if ($loginSucesso) {
-            header("Location: index.php");
+        if ($criadoComSucesso) {
+            header("Location: login.php");
             exit();
         } else {
-            echo "<div class='alert alert-danger' role='alert'>Usuário ou senha incorretos.</div>";
+            echo "<div class='alert alert-danger' role='alert'>Falha ao criar usuário.</div>";
         }
     }
-}
-
-// Função para fazer login
-function fazerLogin($usuario, $senha)
-{
-    global $banco;
-
-    // Consulta para verificar o usuário no banco de dados
-    $query = "SELECT * FROM usuarios WHERE usuario = ?";
-    $stmt = $banco->prepare($query);
-    $stmt->bind_param("s", $usuario);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        if (password_verify($senha, $row['senha'])) {
-            // Iniciar sessão e armazenar dados do usuário, se necessário
-            session_start();
-            $_SESSION['usuario'] = $row['usuario'];
-            return true;
-        }
-    }
-
-    return false;
 }
 ?>
 
@@ -50,7 +27,7 @@ function fazerLogin($usuario, $senha)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - PHPFlix</title>
+    <title>Criar Usuário - PHPFlix</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -62,10 +39,18 @@ function fazerLogin($usuario, $senha)
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        Login - PHPFlix
+                        Criar Usuário
                     </div>
                     <div class="card-body">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nome">Nome:</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
                             <div class="form-group">
                                 <label for="usuario">Usuário:</label>
                                 <input type="text" class="form-control" id="usuario" name="usuario" required>
@@ -74,7 +59,7 @@ function fazerLogin($usuario, $senha)
                                 <label for="senha">Senha:</label>
                                 <input type="password" class="form-control" id="senha" name="senha" required>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                            <button type="submit" class="btn btn-primary">Criar Usuário</button>
                         </form>
                     </div>
                 </div>
