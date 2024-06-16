@@ -15,13 +15,13 @@ function criarUsuario($email, $nickname, $nome, $senha, $tipo) {
     $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
     // Preparar a query usando prepared statement
-    $stmt = $banco->prepare("INSERT INTO usuarios (id, email, usuario, nome, senha, tipo) VALUES (NULL, ?, ?, ?, ?, ?)");
+    $stmt = $banco->prepare("INSERT INTO usuarios (id, email, username, nome, senha, tipo) VALUES (NULL, ?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $email, $nickname, $nome, $senhaHash, $tipo);
 
     if ($stmt->execute()) {
         return true; 
     } else {
-        return false; 
+        return false;
     }
 }
 
@@ -33,13 +33,13 @@ function editarUsuario($nickname, $novaSenha) {
     $senhaHash = password_hash($novaSenha, PASSWORD_DEFAULT);
 
     // Preparar a query usando prepared statement
-    $stmt = $banco->prepare("UPDATE usuarios SET senha = ? WHERE nickname = ?");
+    $stmt = $banco->prepare("UPDATE usuarios SET senha = ? WHERE username = ?");
     $stmt->bind_param("ss", $senhaHash, $nickname);
 
     if ($stmt->execute()) {
         return true; 
     } else {
-        return false; 
+        return false;
     }
 }
 
@@ -48,12 +48,13 @@ function deletarUsuario($nickname) {
     global $banco;
 
     // Preparar a query usando prepared statement
-    $stmt = $banco->prepare("DELETE FROM usuarios WHERE nickname = ?");
+    $stmt = $banco->prepare("DELETE FROM usuarios WHERE username = ?");
     $stmt->bind_param("s", $nickname);
 
     if ($stmt->execute()) {
         return true; 
     } else {
-        return false; 
+        return false;
     }
 }
+?>

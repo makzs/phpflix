@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="index.php">PHPflix</a>
@@ -15,12 +18,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Séries</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="cadastro.php">Cadastrar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.php">Login</a>
-                </li>
+                <?php if (isset($_SESSION['usuario'])): ?>
+                    <li class="nav-item">
+                        <span class="nav-link">Bem-vindo, <?php echo htmlspecialchars($_SESSION['usuario']); ?></span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastro.php">Cadastrar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </nav>

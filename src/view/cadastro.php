@@ -12,7 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $criadoComSucesso = criarUsuario($e, $u, $n, $s, "default");
 
         if ($criadoComSucesso) {
-            header("Location: login.php");
+            session_start();
+            $_SESSION['usuario'] = $u;
+            header("Location: index.php");
             exit();
         } else {
             echo "<div class='alert alert-danger' role='alert'>Falha ao criar usuário.</div>";

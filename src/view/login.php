@@ -24,7 +24,7 @@ function fazerLogin($usuario, $senha)
     global $banco;
 
     // Consulta para verificar o usuário no banco de dados
-    $query = "SELECT * FROM usuarios WHERE usuario = ?";
+    $query = "SELECT * FROM usuarios WHERE username = ?";
     $stmt = $banco->prepare($query);
     $stmt->bind_param("s", $usuario);
     $stmt->execute();
@@ -33,9 +33,9 @@ function fazerLogin($usuario, $senha)
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
         if (password_verify($senha, $row['senha'])) {
-            // Iniciar sessão e armazenar dados do usuário, se necessário
+            // Iniciar sessão e armazenar dados do usuário
             session_start();
-            $_SESSION['usuario'] = $row['usuario'];
+            $_SESSION['usuario'] = $row['username'];
             return true;
         }
     }
