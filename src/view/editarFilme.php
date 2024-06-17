@@ -1,4 +1,16 @@
 <?php
+// Verifica se o usuário está autenticado
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SESSION['nivel_acesso'] !== 'admin') {
+    echo "<div class='alert alert-danger' role='alert'>Você não tem permissão para acessar esta página.</div>";
+    exit();
+}
+
 require_once "../controller/banco.php";
 
 if (isset($_GET['id'])) {
@@ -32,7 +44,6 @@ if (isset($_GET['id'])) {
                 $imagemBinario = file_get_contents($imagemTmpName);
             }
 
-            // Atualizar filme no banco de dados
             $editadoComSucesso = editarFilme($id, $nome, $categoria, $nota, $duracao, $diretor, $link, $imagemBinario);
 
             if ($editadoComSucesso) {
@@ -51,7 +62,6 @@ if (isset($_GET['id'])) {
     exit;
 }
 
-// Função para editar filme 
 function editarFilme($id, $nome, $categoria, $nota, $duracao, $diretor, $link, $imagemBinario)
 {
     global $banco;
@@ -91,32 +101,38 @@ function editarFilme($id, $nome, $categoria, $nota, $duracao, $diretor, $link, $
                             enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="nome">Nome:</label>
-                                <input type="text" class="form-control" id="nome" name="nome" value="<?php echo $filme['nome']; ?>" required>
+                                <input type="text" class="form-control" id="nome" name="nome"
+                                    value="<?php echo htmlspecialchars($filme['nome']); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="categoria">Categoria:</label>
-                                <input type="text" class="form-control" id="categoria" name="categoria" value="<?php echo $filme['categoria']; ?>" required>
+                                <input type="text" class="form-control" id="categoria" name="categoria"
+                                    value="<?php echo htmlspecialchars($filme['categoria']); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="nota">Nota:</label>
                                 <input type="number" step="0.1" min="0" max="10" class="form-control" id="nota"
-                                    name="nota" value="<?php echo $filme['nota']; ?>" required>
+                                    name="nota" value="<?php echo htmlspecialchars($filme['nota']); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="duracao">Duração (minutos):</label>
-                                <input type="number" class="form-control" id="duracao" name="duracao" value="<?php echo $filme['duracao']; ?>" required>
+                                <input type="number" class="form-control" id="duracao" name="duracao"
+                                    value="<?php echo htmlspecialchars($filme['duracao']); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="diretor">Diretor:</label>
-                                <input type="text" class="form-control" id="diretor" name="diretor" value="<?php echo $filme['diretor']; ?>" required>
+                                <input type="text" class="form-control" id="diretor" name="diretor"
+                                    value="<?php echo htmlspecialchars($filme['diretor']); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="link">Link:</label>
-                                <input type="text" class="form-control" id="link" name="link" value="<?php echo $filme['link']; ?>" required>
+                                <input type="text" class="form-control" id="link" name="link"
+                                    value="<?php echo htmlspecialchars($filme['link']); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="imagem">Imagem (JPEG):</label>
-                                <input type="file" class="form-control-file" id="imagem" name="imagem" accept="image/jpeg">
+                                <input type="file" class="form-control-file" id="imagem" name="imagem"
+                                    accept="image/jpeg">
                             </div>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </form>

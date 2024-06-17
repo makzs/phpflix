@@ -1,4 +1,16 @@
 <?php
+// Verifica se o usuário está autenticado
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SESSION['nivel_acesso'] !== 'admin') {
+    echo "<div class='alert alert-danger' role='alert'>Você não tem permissão para acessar esta página.</div>";
+    exit();
+}
+
 require_once "../controller/banco.php";
 
 if (isset($_GET['delete_id'])) {
