@@ -97,7 +97,28 @@
 
       $banco->close();
       ?>
+
     </div>
+    <?php
+    // Verifica se o usuário é admin antes de mostrar os links
+    session_start();
+    if (isset($_SESSION['usuario']) && $_SESSION['nivel_acesso'] === 'admin') {
+      echo "
+        <div class='container mt-3'>
+          <div class='row justify-content-center'>
+            <div class='col-md-6 text-center'>
+              <div class='alert alert-secondary' role='alert'>
+                <h4>Administrar Filmes</h4>
+                <a href='criarFilme.php' class='btn btn-primary mr-2'>Criar Filme</a>
+                <a href='editarFilme.php' class='btn btn-warning mr-2'>Editar Filme</a>
+                <a href='deletarFilme.php' class='btn btn-danger'>Deletar Filme</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ";
+    }
+    ?>
   </main>
   <footer class="bg-dark text-white text-center py-3">
     <p>&copy; 2024 PHPflix. Todos os direitos reservados.</p>
