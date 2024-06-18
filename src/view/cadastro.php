@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($criadoComSucesso) {
             session_start();
             $_SESSION['usuario'] = $u;
+            $_SESSION['nivel_acesso'] = "default";
             header("Location: index.php");
             exit();
         } else {

@@ -1,6 +1,9 @@
 <?php
 // Verifica se o usuário está autenticado
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
@@ -13,14 +16,15 @@ if ($_SESSION['nivel_acesso'] !== 'admin') {
 
 require_once "../controller/banco.php";
 
-if (isset($_GET['delete_id'])) {
-    $delete_id = $_GET['delete_id'];
+if (isset($_GET['id'])) {
+    $delete_id = $_GET['id'];
 
     // Deleta o filme do banco de dados
     $deletadoComSucesso = deletarFilme($delete_id);
 
     if ($deletadoComSucesso) {
-        echo "<div class='alert alert-success' role='alert'>Filme apagado com sucesso!</div>";
+        require "index.php";
+        exit;        
     } else {
         echo "<div class='alert alert-danger' role='alert'>Falha ao apagar o filme.</div>";
     }

@@ -9,3 +9,4 @@ if (is_null($n)) {
     deletarUsuario($n);
     echo "Usuario Deletado com sucesso";
 }
+?>

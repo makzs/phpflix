@@ -1,6 +1,9 @@
 <?php
 // Verifica se o usuário está autenticado
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
@@ -33,22 +36,21 @@ if (isset($_GET['id'])) {
         $categoria = $_POST["categoria"] ?? null;
         $nota = $_POST["nota"] ?? null;
         $duracao = $_POST["duracao"] ?? null;
-        $diretor = $_POST["diretor"] ?? null;
         $link = $_POST["link"] ?? null;
         $imagem = $_FILES['imagem'];
         $imagemBinario = null;
 
-        if (!empty($nome) && !empty($categoria) && !empty($nota) && !empty($duracao) && !empty($diretor) && !empty($link)) {
+        if (!empty($nome) && !empty($categoria) && !empty($nota) && !empty($duracao) && !empty($link)) {
             if ($imagem['size'] > 0) {
                 $imagemTmpName = $imagem['tmp_name'];
                 $imagemBinario = file_get_contents($imagemTmpName);
             }
 
-            $editadoComSucesso = editarFilme($id, $nome, $categoria, $nota, $duracao, $diretor, $link, $imagemBinario);
+            $editadoComSucesso = editarFilme($id, $nome, $categoria, $nota, $duracao, $link, $imagemBinario);
 
             if ($editadoComSucesso) {
                 echo "<div class='alert alert-success' role='alert'>Filme editado com sucesso!</div>";
-                header("Location: filmes.php");
+                echo "<script>window.location.href = 'movie_details.php?id={$id}';</script>";
                 exit;
             } else {
                 echo "<div class='alert alert-danger' role='alert'>Falha ao editar o filme.</div>";
@@ -62,19 +64,27 @@ if (isset($_GET['id'])) {
     exit;
 }
 
-function editarFilme($id, $nome, $categoria, $nota, $duracao, $diretor, $link, $imagemBinario)
+function editarFilme($id, $nome, $categoria, $nota, $duracao, $link, $imagemBinario)
 {
     global $banco;
-    if ($imagemBinario) {
-        $stmt = $banco->prepare("UPDATE filmes SET nome = ?, categoria = ?, nota = ?, duracao = ?, diretor = ?, link = ?, imagem = ? WHERE id = ?");
-        $stmt->bind_param("ssdsbbsi", $nome, $categoria, $nota, $duracao, $diretor, $link, $imagemBinario, $id);
-    } else {
-        $stmt = $banco->prepare("UPDATE filmes SET nome = ?, categoria = ?, nota = ?, duracao = ?, diretor = ?, link = ? WHERE id = ?");
-        $stmt->bind_param("ssdsbsi", $nome, $categoria, $nota, $duracao, $diretor, $link, $id);
-    }
-    return $stmt->execute();
-}
 
+    // Process the image upload
+    if ($imagemBinario) {
+        $imagemTmpName = $_FILES['imagem']['tmp_name'];
+        $imagemBinario = file_get_contents($imagemTmpName);
+    }
+
+    // Prepare the update statement
+    $stmt = $banco->prepare("UPDATE filmes SET nome = ?, categoria = ?, nota = ?, duracao = ?, link = ?, imagem = ? WHERE id = ?");
+    $stmt->bind_param("ssdsbsi", $nome, $categoria, $nota, $duracao, $link, $imagemBinario, $id);
+
+    // Execute the update
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        return false;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -97,8 +107,8 @@ function editarFilme($id, $nome, $categoria, $nota, $duracao, $diretor, $link, $
                         Editar Filme
                     </div>
                     <div class="card-body">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $id; ?>" method="post"
-                            enctype="multipart/form-data">
+                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $id; ?>"
+                            method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="nome">Nome:</label>
                                 <input type="text" class="form-control" id="nome" name="nome"
@@ -116,13 +126,8 @@ function editarFilme($id, $nome, $categoria, $nota, $duracao, $diretor, $link, $
                             </div>
                             <div class="form-group">
                                 <label for="duracao">Duração (minutos):</label>
-                                <input type="number" class="form-control" id="duracao" name="duracao"
+                                <input type="time" class="form-control" id="duracao" name="duracao"
                                     value="<?php echo htmlspecialchars($filme['duracao']); ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="diretor">Diretor:</label>
-                                <input type="text" class="form-control" id="diretor" name="diretor"
-                                    value="<?php echo htmlspecialchars($filme['diretor']); ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="link">Link:</label>

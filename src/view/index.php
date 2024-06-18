@@ -66,59 +66,38 @@
       $sql_filmes = "SELECT id, nome, imagem FROM filmes LIMIT 24";
       $resultado_filmes = $banco->query($sql_filmes);
 
-      if ($resultado_filmes) { 
+      if ($resultado_filmes) {
         if ($resultado_filmes->num_rows > 0) {
-          echo "<div class='row'>"; 
+          echo "<div class='row'>";
           while ($filme = $resultado_filmes->fetch_assoc()) {
             $movie_id = $filme['id'];
             $movie_title = $filme['nome'];
-            $image_data = $filme['imagem']; 
-      
+            $image_data = $filme['imagem'];
+
             $base64_image = base64_encode($image_data);
 
-            echo "
-              <div class='col-sm-6 col-md-4 col-lg-3 mb-4'>
-                <div class='card movie-card'>
-                  <img src='data:image/jpeg;base64,$base64_image' class='card-img-top' alt='$movie_title'>
-                  <div class='card-body'>
-                    <h5 class='card-title'>$movie_title</h5>
-                  </div>
-                </div>
-              </div>
-            ";
+            echo "<div class='col-sm-6 col-md-4 col-lg-3 mb-4'>
+                    <a href='movie_details.php?id=$movie_id' class='card-link'>
+                      <div class='card movie-card'>
+                        <img src='data:image/jpeg;base64,$base64_image' class='card-img-top' alt='$movie_title'>
+                        <div class='card-body'>
+                          <h5 class='card-title'>$movie_title</h5>
+                        </div>
+                      </div>
+                    </a>
+                  </div>";
           }
-          echo "</div>"; 
+          echo "</div>";
         } else {
           echo "<p class='text-center'>Nenhum filme encontrado no catálogo.</p>";
         }
       } else {
-        echo "<p class='text-center'>Erro ao buscar filmes.</p>"; 
+        echo "<p class='text-center'>Erro ao buscar filmes.</p>";
       }
 
       $banco->close();
       ?>
-
     </div>
-    <?php
-    // Verifica se o usuário é admin antes de mostrar os links
-    session_start();
-    if (isset($_SESSION['usuario']) && $_SESSION['nivel_acesso'] === 'admin') {
-      echo "
-        <div class='container mt-3'>
-          <div class='row justify-content-center'>
-            <div class='col-md-6 text-center'>
-              <div class='alert alert-secondary' role='alert'>
-                <h4>Administrar Filmes</h4>
-                <a href='criarFilme.php' class='btn btn-primary mr-2'>Criar Filme</a>
-                <a href='editarFilme.php' class='btn btn-warning mr-2'>Editar Filme</a>
-                <a href='deletarFilme.php' class='btn btn-danger'>Deletar Filme</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      ";
-    }
-    ?>
   </main>
   <footer class="bg-dark text-white text-center py-3">
     <p>&copy; 2024 PHPflix. Todos os direitos reservados.</p>
